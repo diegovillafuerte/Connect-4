@@ -94,9 +94,10 @@
     
 hijos)
 
-(setf tiro-optimo nil)
-
-(defun alfa-beta (estado depth maximizer alfa beta)
+(setf move nil)
+(setf columna-tiro-chido nil)
+(setf i 0)
+(defun alfa-beta (estado depth maximizer alfa beta time)
     
 	(if (eq depth 0)
 		(return-from alfa-beta (valor-nodo estado)))
@@ -104,11 +105,12 @@ hijos)
 	(cond ((= maximizer 1)
 		(setf val -1000000)
 		(setq hijos '())
+		
 		(dolist (n (genera-hijos estado 2 hijos))
-			(setf val (max (alfa-beta n (- depth 1) 0 alfa beta) val))
 			
-			(cond ((> val alfa) (setf alfa (max alfa val))(setf tiro-optimo n)))
-			
+			(setf val (max (alfa-beta n (- depth 1) 0 alfa beta (+ time 1)) val))
+			(cond ((> val alfa) (setf alfa (max alfa val))(cond ((= time 1)(setf columna-tiro-chido i)(setf move n)))))
+			(if (= time 1)(incf i))
 			(if (> alfa beta)(return))
 			
 		)(return-from alfa-beta val))
@@ -117,7 +119,8 @@ hijos)
 		(setf val 1000000)
 		(setf hijos '())
 		(dolist (n (genera-hijos estado 1 hijos))
-			(setf val (min (alfa-beta n (- depth 1) 1 alfa beta) val))
+			
+			(setf val (min (alfa-beta n (- depth 1) 1 alfa beta (+ time 1)) val))
 			(setf beta (min beta val))
 			(if (> alfa beta)(return))
 			
@@ -125,3 +128,7 @@ hijos)
 	)	
 )
 
+(print (alfa-beta board 6 1 -1000000 1000000 1))
+(print move)
+(print columna-tiro-chido)
+(print (valor-nodo board))
