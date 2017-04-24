@@ -1,6 +1,7 @@
 (setq board '(((0 0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0 0) 0)
 ((0 0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0 0) 0)) )
  
+
 (defun check4horizontal (estado)
     (setf ultima-ficha nil)
     (setf unos 0)
@@ -31,11 +32,7 @@
         )
         (setf unos 0 dos 0)
     )
-    (print TwoInRow)
-    (print OneInRow)
-    (print puntos-dos)
- 
-)
+(- puntos-dos puntos-uno))
  
 (defun check4vertical (state)
 	(setf ultima-ficha nil)
@@ -63,13 +60,47 @@
         (if (eq OneInRow 4)(incf puntaje-uno 1000))
 		(setf unos 0 dos 0)
 	)
-	(print puntaje-uno)
-	(print puntaje-dos)
-)
+(- puntaje-dos puntaje-uno))
+
+(defun valor-nodo (estado)
+(+ (check4vertical estado) (check4horizontal estado)))
  
+
 (defun tira-en (columna board)
 	(setf (nth (cadr (nth columna board)) (car (nth columna board))) 2)
 	(incf (cadr (nth columna board)))
+)
+
+
+(defun insert-at-n (n lst elem)
+(cond
+((null lst)(list elem))
+((zerop n) (cons elem (cdr lst)))
+((not(minusp n)) (cons (car lst)
+(insert-at-n (1- n)(cdr lst) elem)))
+(T (write "error"))))
+
+
+(defun genera-hijos (board ficha)
+    (setq hijos '())
+    (dotimes (n 6)
+    	(cond ((< (cadr (nth n board)) 5)(setf hijo (insert-at-n (cadr (nth n board)) (car (nth n board)) ficha))
+    	(setq hijo-wrap '())
+    	(push hijo hijo-wrap)
+    	(push (+ 1 (cadr (nth n board))) hijo-wrap)
+    	(push (insert-at-n n (reverse board) (reverse hijo-wrap)) hijos))
+    	(t (push nil hijos))))
+    
+hijos)
+
+(defun alfa-beta (estado depth maximizer alfa beta)
+	(if (eq depth 0)
+		(return-from alfa-beta (valor-nodo estado))
+	(if (equal maximizer t)
+		(setf val 0)
+		(setf hijos '())
+		()
+	)
 )
 
 
