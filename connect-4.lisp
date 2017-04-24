@@ -1,5 +1,5 @@
-(setq board '(((1 0 0 0 0 0 0 0) 1)((0 0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0 0) 0)
-((0 0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0 0) 0)) )
+(setq board '(((1 0 0 0 0 0 0) 1)((0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0) 0)
+((0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0) 0)) )
  
 
 (defun check4horizontal (estado)
@@ -84,8 +84,8 @@
 
 (defun genera-hijos (board ficha hijos)
 
-    (dotimes (n 6)
-    	(cond ((< (cadr (nth n board)) 5)(setf hijo (insert-at-n (cadr (nth n board)) (car (nth n board)) ficha))
+    (dotimes (n 7)
+    	(cond ((< (cadr (nth n board)) 7)(setf hijo (insert-at-n (cadr (nth n board)) (car (nth n board)) ficha))
     	(setq hijo-wrap '())
     	(push hijo hijo-wrap)
     	(push (+ 1 (cadr (nth n board))) hijo-wrap)
@@ -107,9 +107,10 @@ hijos)
 		(setq hijos '())
 		
 		(dolist (n (genera-hijos estado 2 hijos))
-			
+		
+			(cond ((not (null n))
 			(setf val (max (alfa-beta n (- depth 1) 0 alfa beta (+ time 1)) val))
-			(cond ((> val alfa) (setf alfa (max alfa val))(cond ((= time 1)(setf columna-tiro-chido i)(setf move n)))))
+			(cond ((> val alfa) (setf alfa (max alfa val))(cond ((= time 1)(setf columna-tiro-chido i)(setf move n)))))))
 			(if (= time 1)(incf i))
 			(if (> alfa beta)(return))
 			
@@ -128,7 +129,12 @@ hijos)
 	)	
 )
 
-(print (alfa-beta board 6 1 -1000000 1000000 1))
+(defun find-column (list1 list2)
+	(dotimes (n 7)
+		(if (not (equal (nth n list1) (nth n list2)))(setq columna n))
+	)
+columna)
+
+(print (alfa-beta board 7 1 -1000000 1000000 1))
 (print move)
-(print columna-tiro-chido)
-(print (valor-nodo board))
+(print (find-column board move))
