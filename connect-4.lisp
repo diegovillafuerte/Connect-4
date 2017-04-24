@@ -1,4 +1,4 @@
-(setq board '(((0 0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0 0) 0)
+(setq board '(((2 0 0 0 0 0 0 0) 1)((1 2 0 0 0 0 0 0) 2)((0 0 0 0 0 0 0 0) 0)
 ((0 0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0 0) 0)) )
  
 
@@ -39,6 +39,7 @@
 	(setf unos 0 dos 0)
 	(setf i 0)
 	(setf puntaje-uno 0 puntaje-dos 0)
+	(setf OneInRow 0 TwoInRow 0)
  
 	(dolist (n state)
 		(loop 
@@ -81,8 +82,8 @@
 (T (write "error"))))
 
 
-(defun genera-hijos (board ficha)
-    (setq hijos '())
+(defun genera-hijos (board ficha hijos)
+
     (dotimes (n 6)
     	(cond ((< (cadr (nth n board)) 5)(setf hijo (insert-at-n (cadr (nth n board)) (car (nth n board)) ficha))
     	(setq hijo-wrap '())
@@ -93,14 +94,38 @@
     
 hijos)
 
+(setf tiro-optimo nil)
+
 (defun alfa-beta (estado depth maximizer alfa beta)
+    
 	(if (eq depth 0)
-		(return-from alfa-beta (valor-nodo estado))
-	(if (equal maximizer t)
-		(setf val 0)
+	    (print 10)
+		(return-from alfa-beta (valor-nodo estado)))
+	(cond ((= maximizer 1)
+		(setf val -1000000)
 		(setf hijos '())
-		()
+		(genera-hijos estado 2 hijos)
+		(print hijos)
+		(dolist (n hijos)
+			(setf val (max (alfa-beta n (- depth 1) 0 alfa beta) val))
+			(cond ((> val alfa) (setf alfa (max alfa val))(setf tiro-optimo n)))
+			(if (> alfa beta)(return))
+			(return-from alfa-beta val)
+		))
 	)
+	(cond ((= maximizer 0)
+		(setf val 1000000)
+		(setf hijos '())
+		(genera-hijos estado 1 hijos)
+		(print hijos)
+		(dolist (n hijos)
+			(setf val (max (alfa-beta n (- depth 1) 1 alfa beta) val))
+			(setf alfa (max alfa val))
+			(if (> alfa beta)(return))
+			(return-from alfa-beta val)
+		))
+	)	
 )
 
-
+(print (alfa-beta board 1 1 -1000000 1000000))
+(print tiro-optimo)
