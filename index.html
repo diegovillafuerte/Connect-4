@@ -12,13 +12,20 @@
   <script src="js/vars.js"></script>
   <script src="js/functions.js"></script>
   <script src="js/controller.js"></script>
+  <script src="/Users/diego/js-lisp/build/lisp.js"></script>
+  <script type="text/javascript">
+  lisp.load("connect-4.lisp");
+  </script>
 </head>
 <body>
   <section class="wrapper">
     <div class="info">
       <h1 class="title">Conecta 4</h1>
+      <h2 class="indica">Inicia</h2>
       <h2 class="message"><span class="prefix"></span><span id="player" class="player">&nbsp;</span></h2>
-      <a href="#" class="play-again" style="display: none;">Juega de nuevo</a>
+      <a href="#" class="play-again" id="facil" >Juega Facil</a>
+      <a href="#" class="play-again" id="medio" >Juega Intermedio</a>
+      <a href="#" class="play-again" id="dificil" >Juega Dificil</a>
     </div>
     <table class="board">
       <tbody>
