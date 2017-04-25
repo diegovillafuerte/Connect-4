@@ -1,5 +1,5 @@
-(setq board '(((2 2 2 2 1 2) 6)((1 2 2 1 1 0) 5)((1 2 1 1 0 0) 4)((2 1 2 0 0 0) 3)
-((1 2 0 0 0 0) 2)((1 0 0 0 0 0) 1)((2 0 0 0 0 0) 1)) )
+(setq board '(((2 0 0 0 0 0) 1)((2 2 2 1 0 0) 4)((0 0 0 0 0 0) 0)((2 1 2 0 0 0) 3)
+((1 0 0 0 0 0) 1)((1 0 0 0 0 0) 1)((0 0 0 0 0 0) 0)) )
  
  
 (defun check4horizontal (estado)
@@ -190,7 +190,7 @@
 (- puntos-dos puntos-uno))
  
 (defun valor-nodo (estado)
-(+ (check4vertical estado) (check4horizontal estado)))
+(+ (check4vertical estado)(traverse-diagonal-a estado)(traverse-diagonal-a2 estado) (check4horizontal estado)))
  
  
 (defun tira-en (columna board)
@@ -211,12 +211,13 @@
 (defun genera-hijos (board ficha hijos)
  
     (dotimes (n 7)
+        (if (not (null (cadr (nth n board))))
     	(cond ((< (cadr (nth n board)) 7)(setf hijo (insert-at-n (cadr (nth n board)) (car (nth n board)) ficha))
     	(setq hijo-wrap '())
     	(push hijo hijo-wrap)
     	(push (+ 1 (cadr (nth n board))) hijo-wrap)
     	(push (insert-at-n n board (reverse hijo-wrap)) hijos))
-    	(t (push nil hijos))))
+    	(t (push nil hijos)))))
  
 hijos)
  
@@ -266,4 +267,4 @@ columna)
     (setq tira-en (find-column estado move))
 tira-en)
 
-(print (traverse-diagonal-a2 board))
+(print (tira-ai board 3))
