@@ -289,3 +289,25 @@ function diagonalWin() {
     // No diagonal wins found. Return false.
     return false;
 }
+
+function tiraAi(){
+    var str = "";
+    for (var x = 0; x <= 6; x++) {
+        for (var y = 5; y >= 0; y--) {
+            if(board[y][x] == 0)
+                str = str + "0 ";          
+            else{
+                if(board[y][x] == "black")
+                    str = str + "1 ";
+                else
+                    str = str + "2 ";
+            }
+        }
+    }
+    $(' .title').text(str);
+
+    //x = (tira-final str 3);
+
+    x = Math.floor((Math.random() * 6));
+    return x;
+}
