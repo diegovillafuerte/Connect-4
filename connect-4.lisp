@@ -1,7 +1,6 @@
 (setq board '(((1 2 2 1 0 0) 4)((1 1 0 0 0 0) 2)((2 0 0 0 0 0) 1)((2 0 0 0 0 0) 1)
 ((2 0 0 0 0 0) 1)((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)) )
  
- 
 (defun check4horizontal (estado)
     (setf ultima-ficha nil)
     (setf unos 0)
@@ -268,6 +267,5 @@ columna)
     (alfa-beta estado depth 1 -10000000 10000000 1)
     (setq tira-en (find-column estado move))
 tira-en)
-
-(print (tira-ai board 6))
-(print (nth n board))
+ 
+ 
