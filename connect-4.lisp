@@ -1,5 +1,5 @@
-(setq board '(((2 0 0 0 0 0) 1)((2 2 2 1 0 0) 4)((0 0 0 0 0 0) 0)((2 1 2 0 0 0) 3)
-((1 0 0 0 0 0) 1)((1 0 0 0 0 0) 1)((0 0 0 0 0 0) 0)) )
+(setq board '(((1 2 0 0 0 0) 1)((1 0 0 0 0 0) 1)((0 0 0 0 0 0) 0)((1 0 0 0 0 0) 1)
+((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)) )
  
  
 (defun check4horizontal (estado)
@@ -267,4 +267,4 @@ columna)
     (setq tira-en (find-column estado move))
 tira-en)
 
-(print (tira-ai board 3))
+(print (tira-ai board 5))
