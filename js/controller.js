@@ -41,9 +41,54 @@ $(document).ready(function() {
         }
 
         changePlayer();
+
+        // Aqui el tiro de AI
+
+        y_pos = 0;
+        // x_pos = tiraAi(board, nivel);
+        x_pos = tiraAi();
+        $(' .indica').text("AI tiro en: " + x_pos);
+
+        y_pos = dropToBottom(x_pos, y_pos);
+
+        while (positionIsTaken(x_pos, y_pos)) {
+            y_pos = 0;
+            x_pos = tiraAi();
+            $(' .indica').text("AI tiro en: " + x_pos);
+
+            y_pos = dropToBottom(x_pos, y_pos);
+        }
+
+        addDiscToBoard(currentPlayer, x_pos, y_pos);
+        printBoard();
+
+        // Check to see if we have a winner.
+        if (verticalWin() || horizontalWin() || diagonalWin()) {
+            // Destroy our click listener to prevent further play.
+            $('.board button').unbind('click');
+            $('.prefix').text(config.winPrefix);
+            $('.play-again').show("slow");
+            return;
+
+        } else if (gameIsDraw()) {
+            // Destroy our click listener to prevent further play.
+            $('.board button').unbind('click');
+            $('.message').text(config.drawMsg);
+            $('.play-again').show("slow");
+            return;
+        }
+
+
+        changePlayer();
     });
 
-    $('.play-again').click(function(e) {
+    $('#facil').click(function(e) {
+        location.reload();
+    });
+    $('#medio').click(function(e) {
+        location.reload();
+    });
+    $('#dificil').click(function(e) {
         location.reload();
     });
 
