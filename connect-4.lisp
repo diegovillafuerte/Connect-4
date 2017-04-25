@@ -190,7 +190,7 @@
 (- puntos-dos puntos-uno))
  
 (defun valor-nodo (estado)
-(+ (check4vertical estado)(traverse-diagonal-a estado)(traverse-diagonal-a2 estado) (check4horizontal estado)))
+(+ (check4vertical estado)(traverse-diagonal-a estado)(traverse-diagonal-a2 estado)(traverse-diagonal-d estado)(traverse-diagonal-d2 estado)(check4horizontal estado)))
  
  
 (defun tira-en (columna board)
