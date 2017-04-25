@@ -1,5 +1,5 @@
-(setq board '(((2 2 2 2 0 0) 4)((1 2 2 0 0 0) 3)((1 2 0 0 0 0) 2)((2 0 0 0 0 0) 1)
-((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)) )
+(setq board '(((2 2 2 2 1 2) 6)((1 2 2 1 1 0) 5)((1 2 1 1 0 0) 4)((2 1 2 0 0 0) 3)
+((1 2 0 0 0 0) 2)((1 0 0 0 0 0) 1)((2 0 0 0 0 0) 1)) )
  
  
 (defun check4horizontal (estado)
@@ -157,6 +157,37 @@
         (when (< i 1)(return))
     )
 (- puntos-dos puntos-uno))
+
+(defun traverse-diagonal-a2 (estado)
+    (setf ultima-ficha nil)
+    (setf unos 0)
+    (setf dos 0)
+    (setf puntos-uno 0)
+    (setf puntos-dos 0)
+    (setf TwoInRow 0 OneInRow 0)
+    
+    
+    (dotimes (i 6)
+        (setf n 6)
+        (loop 
+            (case (nth (+ (- 6 n) i) (car (nth n estado)))
+                (0 (incf unos)(incf dos)(setf ultima-ficha 0))
+                (1 (incf unos)(setf dos 0)(setf ultima-ficha 1))
+                (2 (incf dos)(setf unos 0)(setf ultima-ficha 2)))
+ 
+                (if (eq ultima-ficha 2)(incf TwoInRow)(setf TwoInRow 0))
+                (if (eq ultima-ficha 1)(incf OneInRow)(setf OneInRow 0))
+                (if (eq TwoInRow 4)(incf puntos-dos 100))
+                (if (eq OneInRow 4)(incf puntos-uno 100))
+                (cond 
+                    ((and (> (+ (- 6 n) i) 0) (eq 0 (nth (+ (- 6 n) i) (car (nth n estado)))) (eq 0 (nth (- (+ (- 6 n) i) 1) (car (nth n estado)))) (setf unos 0) (setf dos 0))))
+                (cond ((eq 4 unos) (incf puntos-uno) (decf unos)))
+                (cond ((eq 4 dos) (incf puntos-dos) (decf dos)))
+                (decf n)
+                (when (< n (+ i 1))(return))
+        )
+    )
+(- puntos-dos puntos-uno))
  
 (defun valor-nodo (estado)
 (+ (check4vertical estado) (check4horizontal estado)))
@@ -229,3 +260,5 @@ hijos)
 		(if (not (equal (nth n list1) (nth n list2)))(setq columna n))
 	)
 columna)
+
+(print (traverse-diagonal-a2 board))
