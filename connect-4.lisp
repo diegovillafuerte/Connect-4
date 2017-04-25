@@ -62,6 +62,70 @@
 		(setf unos 0 dos 0)
 	)
 (- puntaje-dos puntaje-uno))
+
+(defun traverse-diagonal-d (estado)
+
+    (setf ultima-ficha nil)
+    (setf unos 0)
+    (setf dos 0)
+    (setf puntos-uno 0)
+    (setf puntos-dos 0)
+    (setf TwoInRow 0 OneInRow 0)
+
+    (dotimes (i 6)
+        (dotimes (n (- 7 i))
+            (if (> (+ i n) 5) (return))
+            (case (nth (+ i n) (car (nth n estado)))
+                (0 (incf unos)(incf dos)(setf ultima-ficha 0))
+                (1 (incf unos)(setf dos 0)(setf ultima-ficha 1))
+                (2 (incf dos)(setf unos 0)(setf ultima-ficha 2)))
+ 
+                (if (eq ultima-ficha 2)(incf TwoInRow)(setf TwoInRow 0))
+                (if (eq ultima-ficha 1)(incf OneInRow)(setf OneInRow 0))
+                (if (eq TwoInRow 4)(incf puntos-dos 100))
+                (if (eq OneInRow 4)(incf puntos-uno 100))
+ 
+                (cond 
+                    ((and (> (+ i n) 0) (eq 0 (nth (+ i n) (car (nth n estado)))) (eq 0 (nth (- (+ i n) 1) (car (nth n estado)))) (setf unos 0) (setf dos 0))))
+                (cond ((eq 4 unos) (incf puntos-uno) (decf unos)))
+                (cond ((eq 4 dos) (incf puntos-dos) (decf dos)))
+ 
+        )
+    
+    )
+(- puntos-dos puntos-uno))
+
+(defun traverse-diagonal-d2 (estado)
+
+    (setf ultima-ficha nil)
+    (setf unos 0)
+    (setf dos 0)
+    (setf puntos-uno 0)
+    (setf puntos-dos 0)
+    (setf TwoInRow 0 OneInRow 0)
+
+    (dotimes (i 6)
+        (dotimes (n (- 7 i))
+            (if (> n 5) (return))
+            (case (nth n (car (nth (+ i n) estado)))
+                (0 (incf unos)(incf dos)(setf ultima-ficha 0))
+                (1 (incf unos)(setf dos 0)(setf ultima-ficha 1))
+                (2 (incf dos)(setf unos 0)(setf ultima-ficha 2)))
+ 
+                (if (eq ultima-ficha 2)(incf TwoInRow)(setf TwoInRow 0))
+                (if (eq ultima-ficha 1)(incf OneInRow)(setf OneInRow 0))
+                (if (eq TwoInRow 4)(incf puntos-dos 100))
+                (if (eq OneInRow 4)(incf puntos-uno 100))
+ 
+                (cond 
+                    ((and (> n 0) (eq 0 (nth n (car (nth (+ i n) estado)))) (eq 0 (nth (- n 1) (car (nth (+ i n) estado)))) (setf unos 0) (setf dos 0))))
+                (cond ((eq 4 unos) (incf puntos-uno) (decf unos)))
+                (cond ((eq 4 dos) (incf puntos-dos) (decf dos)))
+ 
+        )
+    
+    )
+(- puntos-dos puntos-uno))
  
 (defun valor-nodo (estado)
 (+ (check4vertical estado) (check4horizontal estado)))
