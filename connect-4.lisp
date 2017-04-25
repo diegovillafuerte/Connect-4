@@ -19,8 +19,8 @@
  
                 (if (eq ultima-ficha 2)(incf TwoInRow)(setf TwoInRow 0))
                 (if (eq ultima-ficha 1)(incf OneInRow)(setf OneInRow 0))
-                (if (eq TwoInRow 4)(incf puntos-dos 100))
-                (if (eq OneInRow 4)(incf puntos-uno 100))
+                (if (eq TwoInRow 4)(incf puntos-dos 1000))
+                (if (eq OneInRow 4)(incf puntos-uno 1000))
  
  
  
