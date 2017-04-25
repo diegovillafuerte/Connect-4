@@ -261,4 +261,9 @@ hijos)
 	)
 columna)
 
+(defun tira-ai (estado depth)
+    (alfa-beta estado depth 1 -10000000 10000000 1)
+    (setq tira-en (find-column estado move))
+tira-en)
+
 (print (traverse-diagonal-a2 board))
