@@ -1,7 +1,7 @@
-(setq board '(((1 0 0 0 0 0 0) 1)((0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0) 0)
-((0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0) 0)((0 0 0 0 0 0 0) 0)) )
+(setq board '(((1 0 0 0 0 0) 1)((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)
+((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)) )
  
-
+ 
 (defun check4horizontal (estado)
     (setf ultima-ficha nil)
     (setf unos 0)
@@ -62,17 +62,17 @@
 		(setf unos 0 dos 0)
 	)
 (- puntaje-dos puntaje-uno))
-
+ 
 (defun valor-nodo (estado)
 (+ (check4vertical estado) (check4horizontal estado)))
  
-
+ 
 (defun tira-en (columna board)
 	(setf (nth (cadr (nth columna board)) (car (nth columna board))) 2)
 	(incf (cadr (nth columna board)))
 )
-
-
+ 
+ 
 (defun insert-at-n (n lst elem)
 (cond
 ((null lst)(list elem))
@@ -80,10 +80,10 @@
 ((not(minusp n)) (cons (car lst)
 (insert-at-n (1- n)(cdr lst) elem)))
 (T (write "error"))))
-
-
+ 
+ 
 (defun genera-hijos (board ficha hijos)
-
+ 
     (dotimes (n 7)
     	(cond ((< (cadr (nth n board)) 7)(setf hijo (insert-at-n (cadr (nth n board)) (car (nth n board)) ficha))
     	(setq hijo-wrap '())
@@ -91,50 +91,50 @@
     	(push (+ 1 (cadr (nth n board))) hijo-wrap)
     	(push (insert-at-n n board (reverse hijo-wrap)) hijos))
     	(t (push nil hijos))))
-    
+ 
 hijos)
-
+ 
 (setf move nil)
 (setf columna-tiro-chido nil)
 (setf i 0)
 (defun alfa-beta (estado depth maximizer alfa beta time)
-    
+ 
 	(if (eq depth 0)
 		(return-from alfa-beta (valor-nodo estado)))
-		
+ 
 	(cond ((= maximizer 1)
 		(setf val -1000000)
 		(setq hijos '())
-		
+ 
 		(dolist (n (genera-hijos estado 2 hijos))
-		
+ 
 			(cond ((not (null n))
 			(setf val (max (alfa-beta n (- depth 1) 0 alfa beta (+ time 1)) val))
 			(cond ((> val alfa) (setf alfa (max alfa val))(cond ((= time 1)(setf columna-tiro-chido i)(setf move n)))))))
 			(if (= time 1)(incf i))
 			(if (> alfa beta)(return))
-			
+ 
 		)(return-from alfa-beta val))
 	)
 	(cond ((= maximizer 0)
 		(setf val 1000000)
 		(setf hijos '())
 		(dolist (n (genera-hijos estado 1 hijos))
-			
+ 
 			(setf val (min (alfa-beta n (- depth 1) 1 alfa beta (+ time 1)) val))
 			(setf beta (min beta val))
 			(if (> alfa beta)(return))
-			
+ 
 		)(return-from alfa-beta val))
 	)	
 )
-
+ 
 (defun find-column (list1 list2)
 	(dotimes (n 7)
 		(if (not (equal (nth n list1) (nth n list2)))(setq columna n))
 	)
 columna)
-
+ 
 (print (alfa-beta board 7 1 -1000000 1000000 1))
 (print move)
 (print (find-column board move))
