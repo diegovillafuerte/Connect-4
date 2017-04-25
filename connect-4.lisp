@@ -1,5 +1,5 @@
-(setq board '(((1 2 0 0 0 0) 1)((1 0 0 0 0 0) 1)((0 0 0 0 0 0) 0)((1 0 0 0 0 0) 1)
-((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)) )
+(setq board '(((1 2 2 1 0 0) 4)((1 1 0 0 0 0) 2)((2 0 0 0 0 0) 1)((2 0 0 0 0 0) 1)
+((2 0 0 0 0 0) 1)((0 0 0 0 0 0) 0)((0 0 0 0 0 0) 0)) )
  
  
 (defun check4horizontal (estado)
@@ -52,13 +52,15 @@
             (if (eq ultima-ficha 1)(incf OneInRow)(setf OneInRow 0))
  
             (incf i)
-            (when (or (> i 5) (eq 4 unos) (eq dos 4)) (return (setf i 0)))
+            (cond ((eq 4 unos) (incf puntaje-uno) (decf unos)))
+            (cond ((eq 4 dos) (incf puntaje-dos) (decf dos)))
+    		(if (eq TwoInRow 4)(incf puntaje-dos 1000))
+            (if (eq OneInRow 4)(incf puntaje-uno 1000))
+            (when (> i 5)  (return (setf i 0)))
+
 		)
  
-		(if (eq unos 4) (incf puntaje-uno))
-		(if (eq dos 4) (incf puntaje-dos))
-		(if (eq TwoInRow 4)(incf puntaje-dos 1000))
-        (if (eq OneInRow 4)(incf puntaje-uno 1000))
+		
 		(setf unos 0 dos 0)
 	)
 (- puntaje-dos puntaje-uno))
@@ -267,4 +269,5 @@ columna)
     (setq tira-en (find-column estado move))
 tira-en)
 
-(print (tira-ai board 5))
+(print (tira-ai board 6))
+(print (nth n board))
